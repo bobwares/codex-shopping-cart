@@ -1,0 +1,3 @@
+turnId,timestampUtc,task,branch,tag,headAfter,testsPassed,testsFailed,coverageDeltaPct
+1,2025-09-30T23:31:16Z,Turn 1 API bootstrap,-,-,-,2,0,0
+2,2025-09-30T23:31:16Z,Turn 2 database enablement,-,-,-,0,0,0
