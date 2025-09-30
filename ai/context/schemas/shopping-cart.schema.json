@@ -1,0 +1,111 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ShoppingCart",
+  "type": "object",
+  "description": "Represents a user's shopping cart containing items, pricing, and optional metadata.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier for the shopping cart"
+    },
+    "userId": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Identifier of the user who owns the cart"
+    },
+    "items": {
+      "type": "array",
+      "description": "List of items in the shopping cart",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["productId", "name", "quantity", "unitPrice"],
+        "properties": {
+          "productId": {
+            "type": "string",
+            "description": "Unique identifier of the product"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the product"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of units of the product in the cart"
+          },
+          "unitPrice": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Price per unit of the product"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "description": "Currency code in ISO 4217 format (e.g., USD, EUR)"
+          },
+          "totalPrice": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Total price for this line item (quantity × unitPrice)"
+          }
+        }
+      }
+    },
+    "subtotal": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Sum of all item totals before taxes or discounts"
+    },
+    "discounts": {
+      "type": "array",
+      "description": "List of applied discounts",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Discount or coupon code"
+          },
+          "amount": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Discount amount applied"
+          }
+        }
+      }
+    },
+    "tax": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Total tax applied to the cart"
+    },
+    "shipping": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Shipping cost applied to the cart"
+    },
+    "total": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Final total amount (subtotal - discounts + tax + shipping)"
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "Currency code for the cart (ISO 4217)"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the cart was created"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the cart was last updated"
+    }
+  },
+  "required": ["id", "userId", "items", "subtotal", "total", "currency"]
+}
