@@ -1,0 +1,14 @@
+# App: Shopping Cart
+# Package: api
+# File: .gitignore
+# Version: 0.1.0
+# Turns: 1
+# Author: Codex Agent
+# Date: 2025-09-30T23:31:16Z
+# Exports: (ignore rules)
+# Description: Ignore build artifacts, dependencies, and environment files for the API project.
+/node_modules
+/dist
+/.env
+/coverage
+/.tsbuildinfo
