@@ -1,0 +1,34 @@
+{
+  "turnId": 4,
+  "timestampUtc": "2025-09-30T23:55:40Z",
+  "task": {
+    "name": "Turn 4 shopping cart API delivery",
+    "inputs": [
+      "TASK 09 – Implement Domain CRUD Endpoints",
+      "Task 10 – Global Validation Pipe & Error Handling",
+      "Task 11 – End-to-End Tests with Supertest"
+    ]
+  },
+  "changes": {
+    "added": [
+      "api/src/shopping-cart/dto/shopping-cart-item.dto.ts",
+      "api/src/shopping-cart/dto/shopping-cart-discount.dto.ts",
+      "api/src/shopping-cart/dto/shopping-cart.dto.ts",
+      "api/src/shopping-cart/services/shopping-cart.service.ts",
+      "api/src/shopping-cart/shopping-cart.controller.ts",
+      "api/src/shopping-cart/shopping-cart.module.ts",
+      "api/src/common/http/problem-detail.ts",
+      "api/src/common/http/http-exception.filter.ts",
+      "api/test/e2e/shopping-cart.e2e-spec.ts",
+      "api/e2e/shopping-carts.http"
+    ],
+    "modified": [
+      "api/package.json",
+      "api/src/app.module.ts",
+      "api/src/main.ts"
+    ]
+  },
+  "tests": {
+    "commands": []
+  }
+}

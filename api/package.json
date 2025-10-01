@@ -17,7 +17,14 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "db:validate": "dotenv -e ../ai/context/.env -e .env -- ts-node src/database/validate-connection.ts",
+    "typeorm:migration:create": "dotenv -e ../ai/context/.env -e .env -- typeorm migration:create src/migrations/Manual",
+    "typeorm:migration:generate": "dotenv -e ../ai/context/.env -e .env -- typeorm migration:generate src/migrations/Auto -d src/database/data-source.ts",
+    "typeorm:migration:run": "dotenv -e ../ai/context/.env -e .env -- node --require ts-node/register ./node_modules/typeorm/cli.js migration:run -d src/database/data-source.ts",
+    "typeorm:migration:revert": "dotenv -e ../ai/context/.env -e .env -- node --require ts-node/register ./node_modules/typeorm/cli.js migration:revert -d src/database/data-source.ts",
+    "typeorm:migration:run:js": "dotenv -e ../ai/context/.env -e .env -- node ./node_modules/typeorm/cli.js migration:run -d dist/database/data-source.js",
+    "typeorm:migration:revert:js": "dotenv -e ../ai/context/.env -e .env -- node ./node_modules/typeorm/cli.js migration:revert -d dist/database/data-source.js"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.0",
@@ -30,11 +37,14 @@
     "axios": "^1.9.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
+    "dotenv": "^16.4.5",
+    "joi": "^17.10.0",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "joi": "^17.10.0",
-    "typeorm": "^0.3.24"
+    "typeorm": "^0.3.24",
+    "typeorm-naming-strategies": "^2.0.0",
+    "yaml": "^2.6.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.7",
@@ -46,6 +56,7 @@
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.33.1",
     "@typescript-eslint/parser": "^8.33.1",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^9.28.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",

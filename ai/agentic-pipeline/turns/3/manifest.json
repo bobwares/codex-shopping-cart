@@ -1,0 +1,31 @@
+{
+  "turnId": 3,
+  "timestampUtc": "2025-09-30T23:55:39Z",
+  "task": {
+    "name": "Turn 3 domain persistence setup",
+    "inputs": [
+      "TASK 07 - Create Domain Entities",
+      "TASK 08 - Create TypeORM Configuration"
+    ]
+  },
+  "changes": {
+    "added": [
+      "api/src/common/database/column-numeric.transformer.ts",
+      "api/src/shopping-cart/entities/shopping-cart.entity.ts",
+      "api/src/shopping-cart/entities/shopping-cart-item.entity.ts",
+      "api/src/shopping-cart/entities/shopping-cart-discount.entity.ts",
+      "api/src/database/data-source.ts",
+      "api/src/database/validate-connection.ts",
+      "api/src/migrations/1714512000000-CreateShoppingCartSchema.ts"
+    ],
+    "modified": [
+      "api/package.json",
+      "api/src/app.module.ts",
+      "api/src/config/configuration.ts",
+      "api/src/config/validation.ts"
+    ]
+  },
+  "tests": {
+    "commands": []
+  }
+}

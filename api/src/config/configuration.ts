@@ -1,13 +1,13 @@
 /**
  * App: Shopping Cart
  * Package: api
- * File: configuration.ts
- * Version: 0.1.0
- * Turns: 1
+ * File: config/configuration.ts
+ * Version: 0.2.0
+ * Turns: 4
  * Author: Codex Agent
- * Date: 2025-09-30T23:31:16Z
+ * Date: 2025-09-30T23:55:39Z
  * Exports: default
- * Description: Configuration factory providing strongly typed access to application and database settings.
+ * Description: Configuration factory providing strongly typed access to application, database, and logging settings.
  */
 export default () => ({
   app: {
@@ -18,8 +18,8 @@ export default () => ({
   db: {
     host: process.env.DATABASE_HOST,
     port: parseInt(process.env.DATABASE_PORT ?? '5432', 10),
-    user: process.env.DATABASE_USER,
-    pass: process.env.DATABASE_PASSWORD,
+    username: process.env.DATABASE_USERNAME,
+    password: process.env.DATABASE_PASSWORD,
     name: process.env.DATABASE_NAME,
     schema: process.env.DATABASE_SCHEMA ?? 'public',
     ssl: (process.env.DATABASE_SSL ?? 'false').toLowerCase() === 'true',
