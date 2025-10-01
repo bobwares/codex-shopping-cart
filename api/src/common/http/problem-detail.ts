@@ -9,22 +9,22 @@
  * Exports: ProblemDetail
  * Description: Problem Details response contract describing standardized error payloads returned by the API.
  */
-import { ApiPropertyOptional, ApiResponseProperty } from '@nestjs/swagger';
+import { ApiPropertyOptional, ApiProperty } from '@nestjs/swagger';
 
 export class ProblemDetail {
-  @ApiResponseProperty({ description: 'HTTP status code of the error', example: 400 })
+  @ApiProperty({ description: 'HTTP status code of the error', example: 400 })
   statusCode!: number;
 
-  @ApiResponseProperty({ description: 'Short error summary', example: 'Bad Request' })
+  @ApiProperty({ description: 'Short error summary', example: 'Bad Request' })
   error!: string;
 
-  @ApiResponseProperty({ description: 'Human readable explanation of the problem' })
+  @ApiProperty({ description: 'Human readable explanation of the problem' })
   message!: string | string[];
 
-  @ApiResponseProperty({ description: 'Request path that triggered the error', example: '/shopping-cart/123' })
+  @ApiProperty({ description: 'Request path that triggered the error', example: '/shopping-cart/123' })
   path!: string;
 
-  @ApiResponseProperty({ description: 'Timestamp indicating when the error occurred', example: '2025-09-30T23:31:16.000Z' })
+  @ApiProperty({ description: 'Timestamp indicating when the error occurred', example: '2025-09-30T23:31:16.000Z' })
   timestamp!: string;
 
   @ApiPropertyOptional({ description: 'Additional error details providing field level validation messages' })

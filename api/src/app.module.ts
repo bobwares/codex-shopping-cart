@@ -26,7 +26,7 @@ import { ShoppingCartEntity } from './shopping-cart/entities/shopping-cart.entit
 import { ShoppingCartItemEntity } from './shopping-cart/entities/shopping-cart-item.entity';
 import { ShoppingCartDiscountEntity } from './shopping-cart/entities/shopping-cart-discount.entity';
 
-const CONTEXT_ENV = path.resolve(__dirname, '..', '..', 'ai', 'context', '.env');
+const CONTEXT_ENV = path.resolve(__dirname, '.env');
 
 @Module({
   imports: [
@@ -40,13 +40,12 @@ const CONTEXT_ENV = path.resolve(__dirname, '..', '..', 'ai', 'context', '.env')
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        host: config.get<string>('db.host'),
-        port: config.get<number>('db.port'),
-        username: config.get<string>('db.username'),
-        password: config.get<string>('db.password'),
-        database: config.get<string>('db.name'),
-        schema: config.get<string>('db.schema'),
-        ssl: config.get<boolean>('db.ssl') || undefined,
+        host: config.getOrThrow<string>('db.host'),
+        port: config.get<number>('db.port', 5432),
+        username: config.getOrThrow<string>('db.user'),
+        password: config.getOrThrow<string>('db.pass'),
+        database: config.getOrThrow<string>('db.name'),
+        schema: config.get<string>('db.schema', 'public'),
         namingStrategy: new SnakeNamingStrategy(),
         synchronize: false,
         logging: false,

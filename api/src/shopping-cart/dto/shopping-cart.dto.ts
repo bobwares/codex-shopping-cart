@@ -9,7 +9,7 @@
  * Exports: CreateShoppingCartDto, UpdateShoppingCartDto, ResponseShoppingCartDto
  * Description: DTOs for shopping cart aggregate operations including validation and OpenAPI metadata.
  */
-import { ApiProperty, ApiPropertyOptional, ApiResponseProperty, PartialType } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, PartialType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
@@ -116,39 +116,39 @@ export class UpdateShoppingCartDto extends PartialType(CreateShoppingCartDto) {
 }
 
 export class ResponseShoppingCartDto {
-  @ApiResponseProperty({ description: 'Identifier for the cart', example: '3d5e67a5-0df5-4c08-9ad0-5f7c1c57c3d4' })
+  @ApiProperty({ description: 'Identifier for the cart', example: '3d5e67a5-0df5-4c08-9ad0-5f7c1c57c3d4' })
   id!: string;
 
-  @ApiResponseProperty({ description: 'Identifier of the cart owner', example: '3c76a9da-0c4e-44b6-8d89-2e24125b5c2f' })
+  @ApiProperty({ description: 'Identifier of the cart owner', example: '3c76a9da-0c4e-44b6-8d89-2e24125b5c2f' })
   userId!: string;
 
-  @ApiResponseProperty({ description: 'Line items comprising the cart', type: [ShoppingCartItemDto] })
+  @ApiProperty({ description: 'Line items comprising the cart', type: [ShoppingCartItemDto] })
   items!: ShoppingCartItemDto[];
 
-  @ApiResponseProperty({ description: 'Discounts applied to the cart', type: [ShoppingCartDiscountDto] })
+  @ApiProperty({ description: 'Discounts applied to the cart', type: [ShoppingCartDiscountDto] })
   discounts!: ShoppingCartDiscountDto[];
 
-  @ApiResponseProperty({ description: 'Subtotal prior to discounts and fees', example: 59.97 })
+  @ApiProperty({ description: 'Subtotal prior to discounts and fees', example: 59.97 })
   subtotal!: number;
 
-  @ApiResponseProperty({ description: 'Aggregate discount amount', example: 5.0 })
+  @ApiProperty({ description: 'Aggregate discount amount', example: 5.0 })
   discountsTotal!: number;
 
-  @ApiResponseProperty({ description: 'Tax amount applied to the cart', example: 4.8 })
+  @ApiProperty({ description: 'Tax amount applied to the cart', example: 4.8 })
   tax!: number;
 
-  @ApiResponseProperty({ description: 'Shipping charges for the cart', example: 7.5 })
+  @ApiProperty({ description: 'Shipping charges for the cart', example: 7.5 })
   shipping!: number;
 
-  @ApiResponseProperty({ description: 'Final total after discounts, tax, and shipping', example: 67.27 })
+  @ApiProperty({ description: 'Final total after discounts, tax, and shipping', example: 67.27 })
   total!: number;
 
-  @ApiResponseProperty({ description: 'Currency for monetary values', example: 'USD' })
+  @ApiProperty({ description: 'Currency for monetary values', example: 'USD' })
   currency!: string;
 
-  @ApiResponseProperty({ description: 'Timestamp when the cart was created', example: '2025-09-30T23:31:16.000Z' })
+  @ApiProperty({ description: 'Timestamp when the cart was created', example: '2025-09-30T23:31:16.000Z' })
   createdAt!: string;
 
-  @ApiResponseProperty({ description: 'Timestamp when the cart was last updated', example: '2025-09-30T23:41:16.000Z' })
+  @ApiProperty({ description: 'Timestamp when the cart was last updated', example: '2025-09-30T23:41:16.000Z' })
   updatedAt!: string;
 }

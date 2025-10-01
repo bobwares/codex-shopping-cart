@@ -1,124 +1,133 @@
 /**
- * App: Shopping Cart
- * Package: api
- * File: json-logger.service.ts
- * Version: 0.1.0
- * Turns: 1
- * Author: Codex Agent
- * Date: 2025-09-30T23:31:16Z
- * Exports: JsonLogger
- * Description: Extends Nest's ConsoleLogger to emit structured JSON lines enriched with request context metadata.
+ * # App: Customer Registration API
+ * # Package: api/src/common/logging
+ * # File: json-logger.service.ts
+ * # Version: 0.1.0
+ * # Author: Codex Agent
+ * # Date: 2025-09-30T16:46:37+00:00
+ * # Description: Custom logger producing JSON lines enriched with request context metadata.
+ * #
+ * # Types
+ * # - JsonLine: Shape of each structured log entry emitted when JSON format is active.
+ * #
+ * # Classes
+ * # - JsonLogger: Extends NestJS ConsoleLogger to output structured JSON logs with request correlation data.
+ * #   - configure: Applies runtime log levels and resolves active format.
+ * #   - log/warn/error/debug/verbose: Emit structured entries while respecting configured format.
  */
 import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common';
 import { RequestContext } from './request-context';
 
-type JsonLog = {
+type JsonLine = {
   timestamp: string;
   level: LogLevel;
   context?: string;
   message: string;
   requestId?: string;
-  responseTimeMs?: number;
   stack?: string;
   [key: string]: unknown;
 };
 
-const LEVEL_METHOD: Record<LogLevel, keyof ConsoleLogger> = {
-  error: 'error',
-  warn: 'warn',
-  log: 'log',
-  debug: 'debug',
-  verbose: 'verbose',
-};
-
-function shouldUseJson(): boolean {
-  return (process.env.LOG_FORMAT ?? 'json').toLowerCase() === 'json';
-}
+const FORMAT_ENV = 'LOG_FORMAT';
 
 @Injectable()
 export class JsonLogger extends ConsoleLogger {
-  override setLogLevels(levels: LogLevel[]): void {
+  private format: 'json' | 'text' = this.resolveFormat();
+
+  configure(levels: LogLevel[]): void {
     super.setLogLevels(levels);
+    this.format = this.resolveFormat();
   }
 
-  private toMessage(payload: unknown): string {
-    return typeof payload === 'string' ? payload : JSON.stringify(payload);
-  }
-
-  private write(
-    level: LogLevel,
-    message: unknown,
-    context?: string,
-    meta?: Record<string, unknown>,
-    error?: unknown,
-  ): void {
-    if (!shouldUseJson()) {
-      const method = LEVEL_METHOD[level] ?? 'log';
-      if (method === 'error') {
-        super.error(message, error instanceof Error ? error.stack : undefined, context);
-      } else {
-        super[method](message, context as any);
-      }
-      return;
-    }
-
-    const store = RequestContext.get();
-    const line: JsonLog = {
-      timestamp: new Date().toISOString(),
-      level,
-      context,
-      message: '',
-      requestId: store?.requestId,
-      ...(meta ?? {}),
-    };
-
-    if (typeof message === 'object' && message !== null) {
-      const record = message as Record<string, unknown>;
-      const { msg, message: nestedMessage, ...rest } = record;
-      if (typeof msg === 'string') {
-        line.message = msg;
-      } else if (typeof nestedMessage === 'string') {
-        line.message = nestedMessage;
-      } else {
-        line.message = JSON.stringify(record);
-      }
-      Object.assign(line, rest);
-    } else {
-      line.message = this.toMessage(message);
-    }
-
-    if (store?.startHrTime) {
-      const diff = process.hrtime(store.startHrTime);
-      line.responseTimeMs = Math.round(diff[0] * 1000 + diff[1] / 1_000_000);
-    }
-
-    if (error instanceof Error) {
-      line.stack = error.stack ?? error.message;
-    }
-
-    process.stdout.write(`${JSON.stringify(line)}\n`);
-  }
-
-  override log(message: any, context?: string): void {
+  override log(message: unknown, context?: string): void {
     this.write('log', message, context);
   }
 
-  override error(message: any, stackOrContext?: string, context?: string): void {
-    const hasContext = typeof context === 'string';
-    const stack = hasContext ? stackOrContext : undefined;
-    const ctx = hasContext ? context : stackOrContext;
-    this.write('error', message, ctx, undefined, stack ? new Error(stack) : undefined);
-  }
-
-  override warn(message: any, context?: string): void {
+  override warn(message: unknown, context?: string): void {
     this.write('warn', message, context);
   }
 
-  override debug(message: any, context?: string): void {
+  override error(message: unknown, stack?: string, context?: string): void {
+    this.write('error', message, context, stack);
+  }
+
+  override debug(message: unknown, context?: string): void {
     this.write('debug', message, context);
   }
 
-  override verbose(message: any, context?: string): void {
+  override verbose(message: unknown, context?: string): void {
     this.write('verbose', message, context);
+  }
+
+  private write(level: LogLevel, message: unknown, context?: string, stack?: string): void {
+    if (this.format === 'text') {
+      this.writeText(level, message, stack, context);
+      return;
+    }
+
+    const payload = this.buildJsonLine(level, message, context, stack);
+    process.stdout.write(`${JSON.stringify(payload)}\n`);
+  }
+
+  private writeText(level: LogLevel, message: unknown, stack?: string, context?: string): void {
+    const printable = typeof message === 'string' ? message : JSON.stringify(message);
+    switch (level) {
+      case 'error':
+        super.error(printable, stack, context);
+        break;
+      case 'warn':
+        super.warn(printable, context);
+        break;
+      case 'debug':
+        super.debug(printable, context);
+        break;
+      case 'verbose':
+        super.verbose(printable, context);
+        break;
+      default:
+        super.log(printable, context);
+    }
+  }
+
+  private buildJsonLine(
+      level: LogLevel,
+      message: unknown,
+      context?: string,
+      stack?: string,
+  ): JsonLine {
+    const requestContext = RequestContext.get();
+    const line: JsonLine = {
+      timestamp: new Date().toISOString(),
+      level,
+      message: '',
+    };
+
+    if (typeof requestContext?.requestId === 'string') {
+      line.requestId = requestContext.requestId;
+    }
+
+    if (typeof context === 'string') {
+      line.context = context;
+    }
+
+    if (typeof stack === 'string') {
+      line.stack = stack;
+    }
+
+    if (typeof message === 'object' && message !== null) {
+      const data = message as Record<string, unknown>;
+      const { message: msg, msg: legacyMsg, ...rest } = data;
+      line.message = typeof msg === 'string' ? msg : typeof legacyMsg === 'string' ? legacyMsg : level;
+      Object.assign(line, rest);
+    } else {
+      line.message = String(message);
+    }
+
+    return line;
+  }
+
+  private resolveFormat(): 'json' | 'text' {
+    const value = process.env[FORMAT_ENV]?.toLowerCase();
+    return value === 'text' ? 'text' : 'json';
   }
 }

@@ -18,9 +18,9 @@ import { ShoppingCartEntity } from '../shopping-cart/entities/shopping-cart.enti
 import { ShoppingCartItemEntity } from '../shopping-cart/entities/shopping-cart-item.entity';
 import { ShoppingCartDiscountEntity } from '../shopping-cart/entities/shopping-cart-discount.entity';
 
-const contextEnvPath = path.resolve(__dirname, '..', '..', 'ai', 'context', '.env');
+const contextEnvPath = path.resolve(__dirname, '.env');
 dotenv.config({ path: contextEnvPath });
-dotenv.config();
+
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
