@@ -1,0 +1,65 @@
+# App: Shopping Cart
+# Package: api
+# File: e2e/shopping-carts.http
+# Version: 0.1.0
+# Turns: 4
+# Author: Codex Agent
+# Date: 2025-09-30T23:55:39Z
+# Description: REST client smoke tests covering shopping cart CRUD endpoints and OpenAPI contract discovery.
+
+### Create shopping cart
+POST http://localhost:3000/shopping-cart
+Content-Type: application/json
+Accept: application/json
+
+{
+  "userId": "11111111-2222-4333-8444-555555555555",
+  "items": [
+    {
+      "productId": "SKU-12345",
+      "name": "Wireless Mouse",
+      "quantity": 2,
+      "unitPrice": 19.99,
+      "currency": "USD"
+    }
+  ],
+  "discounts": [
+    {
+      "code": "FREESHIP",
+      "amount": 5.0
+    }
+  ],
+  "subtotal": 39.98,
+  "tax": 3.2,
+  "shipping": 4.99,
+  "total": 43.17,
+  "currency": "USD"
+}
+
+### List shopping carts
+GET http://localhost:3000/shopping-cart
+Accept: application/json
+
+### Fetch shopping cart by id
+# @prompt cartId Enter cart identifier returned from create response
+GET http://localhost:3000/shopping-cart/{{cartId}}
+Accept: application/json
+
+### Update shopping cart
+PUT http://localhost:3000/shopping-cart/{{cartId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "tax": 3.5,
+  "shipping": 0,
+  "total": 42.48
+}
+
+### Delete shopping cart
+DELETE http://localhost:3000/shopping-cart/{{cartId}}
+Accept: application/json
+
+### Retrieve OpenAPI specification
+GET http://localhost:3000/api/openapi.json
+Accept: application/json
