@@ -1,0 +1,23 @@
+{
+  "turnId": 2,
+  "timestampUtc": "2025-09-30T23:31:16Z",
+  "task": {
+    "name": "Turn 2 database enablement",
+    "inputs": [
+      "TASK 05 - Create DB from Schema",
+      "TASK 06 - Create set of test data"
+    ]
+  },
+  "changes": {
+    "added": [
+      "ai/context/schemas/shopping-cart-entities.json",
+      "db/README.md",
+      "db/migrations/01_shopping_cart_domain.sql",
+      "db/test/shopping_cart_domain_test_data.sql"
+    ],
+    "modified": []
+  },
+  "tests": {
+    "commands": []
+  }
+}

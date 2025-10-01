@@ -1,0 +1,11 @@
+### Health metadata endpoint
+GET http://localhost:3000/health
+Accept: application/json
+
+### Liveness probe
+GET http://localhost:3000/health/live
+Accept: application/json
+
+### Readiness probe
+GET http://localhost:3000/health/ready
+Accept: application/json

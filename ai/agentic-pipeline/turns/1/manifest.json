@@ -1,0 +1,48 @@
+{
+  "turnId": 1,
+  "timestampUtc": "2025-09-30T23:31:16Z",
+  "task": {
+    "name": "Turn 1 API bootstrap",
+    "inputs": [
+      "TASK 01 - Initialize Project",
+      "TASK 02 - Add Health Check Endpoint Module",
+      "TASK 03 - Add Health Check E2E .http Test",
+      "TASK 04 - API Logging & Structured Request Tracing"
+    ]
+  },
+  "changes": {
+    "added": [
+      "api/.env.example",
+      "api/.eslintrc.js",
+      "api/.gitignore",
+      "api/.prettier",
+      "api/jest.config.js",
+      "api/nest-cli.json",
+      "api/package.json",
+      "api/tsconfig.json",
+      "api/src/README-config.md",
+      "api/src/app.module.ts",
+      "api/src/common/logging/__tests__/json-logger.service.spec.ts",
+      "api/src/common/logging/json-logger.service.ts",
+      "api/src/common/logging/logging.interceptor.ts",
+      "api/src/common/logging/request-context.ts",
+      "api/src/common/logging/request-id.middleware.ts",
+      "api/src/config/configuration.ts",
+      "api/src/config/validation.ts",
+      "api/src/health/__tests__/health.controller.spec.ts",
+      "api/src/health/health.controller.ts",
+      "api/src/health/health.module.ts",
+      "api/src/main.ts",
+      "api/test/health.e2e-spec.ts",
+      "api/test/jest-e2e.json",
+      "api/e2e/health.http"
+    ],
+    "modified": []
+  },
+  "tests": {
+    "commands": [
+      "npm test",
+      "npm run test:e2e"
+    ]
+  }
+}
